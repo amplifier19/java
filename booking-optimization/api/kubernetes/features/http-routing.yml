@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bookings
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /BookingOptimization-1.0-SNAPSHOT/api/v1/optimize
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: popos.com
+    http:
+      paths:
+      - path: /api/v1/optimize
+        pathType: Prefix
+        backend:
+          service:
+            name: bookings
+            port:
+              number: 8085
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bookings-test
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /BookingOptimization-1.0-SNAPSHOT/api/v1/test
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: popos.com
+    http:
+      paths:
+      - path: /api/v1/test
+        pathType: Prefix
+        backend:
+          service:
+            name: bookings
+            port:
+              number: 8085
+---

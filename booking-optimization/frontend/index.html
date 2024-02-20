@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link rel="stylesheet" href="./static/index.css">
+    <title>Booking Optimization Service</title>
+</head>
+<body>
+    <header class="header">
+        <h2>⚙️ Booking Optimization Service</h2>
+    </header>
+    <section class="problem">
+        <h4>Can't decide which Reservations make You more profitable 💸 </h3>
+    </section>
+    <section class="solution">
+        <p>Maximize rental days of your property, with one click ✅  </p>
+    </section>
+   
+
+    <div id="app">
+        <form @submit.prevent="getOptimized">
+            <label class="upload-container" @dragover.prevent="handleDrag" @drop.prevent="handleDrop">
+                <input ref="file" type="file" name="file" id="file" @change="handleFileChange" accept="text/plain" hidden>
+                <div class="img-container">
+                    <img src="./upload-icon.png" alt="upload-icon">
+                    <section v-if="file?.name" class="file-name">
+                        {{ file.name }}
+                    </section>
+                    <section v-else-if="drag" class="description">
+                        <p>Drop text file Here</p>
+                        <span>Data in file should be comma or space seperated</span>
+                        <span>Acceptable date formats: dd/MM/yyyy, dd-MM-yyyy</span>
+                    </section>
+                    <section v-else class="description">
+                        <p>Drag and drop or Click here, to upload a text file</p>
+                        <span>Data in file should be comma or space seperated</span>
+                        <span>Acceptable date formats: dd/MM/yyyy, dd-MM-yyyy</span>
+                    </section>
+                </div>
+            </label>
+            <button v-if="file?.name" class="submit-btn" type="submit">Optimize</button>
+        </form>
+
+        <div class="data-container">
+            <div class="test">
+                <section class="test">
+                    <span>Test with </span>
+                    <a href="./test/dummy-bookings.txt" target="_blank">dummy-bookings.txt</a>
+                    <button class="test-btn" @click="getOptimizedTest">Test</button>
+                </section>
+            </div>
+            <div class="data">
+                <h2>Maximized rental days: </h2>
+                <span v-if="data?.days" class="days">
+                    <h2 class="green">{{ data?.days }}</h2></td>
+                </span>
+                <section class="data-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Request</th><th>Arrival</th><th>Departure</th>
+                            </tr>
+                        </thead>
+                        <tbody v-if="data?.bookings">
+                            <tr v-for="booking in data?.bookings" :key="booking.name">
+                                <td >{{ booking?.name }}</td>
+                                <td>{{ booking?.arrival }}</td>
+                                <td>{{ booking?.departure }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="./index.js"></script>
+    <style></style>
+</body>
+</html>

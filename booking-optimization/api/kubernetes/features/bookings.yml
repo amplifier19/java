@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookings
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookings
+  template:
+    metadata:
+      labels:
+        app: bookings
+    spec:
+      containers:
+        - name: bookings
+          image: bookings:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookings
+  labels:
+    app: bookings
+spec:
+  type: ClusterIP
+  selector:
+    app: bookings
+  ports:
+    - name: http
+      port: 8085
+      targetPort: 8080
